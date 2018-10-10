@@ -1,0 +1,175 @@
+You need to install https://github.com/node-red/node-red-dashboard
+
+Paste code below to node-red:
+[
+    {
+        "id": "b89b8cb9.5e3b5",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "a18f3e19.4927",
+        "type": "udp in",
+        "z": "b89b8cb9.5e3b5",
+        "name": "",
+        "iface": "",
+        "port": "20001",
+        "ipv": "udp4",
+        "multicast": "false",
+        "group": "",
+        "datatype": "utf8",
+        "x": 160,
+        "y": 40,
+        "wires": [
+            [
+                "2beea3a5.b5146c"
+            ]
+        ]
+    },
+    {
+        "id": "2beea3a5.b5146c",
+        "type": "function",
+        "z": "b89b8cb9.5e3b5",
+        "name": "udp2array",
+        "func": "var input = msg.payload;\ninput = input.replace(new RegExp(\"'\", 'g'), \"\\\"\")\n  .replace(new RegExp(\"{\", 'g'), \"[\")\n  .replace(new RegExp(\"}\", 'g'), \"]\");\n\nvar data = JSON.parse(input);\n\nmsg.payload = data;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 430,
+        "y": 80,
+        "wires": [
+            [
+                "79081a43.376504"
+            ]
+        ]
+    },
+    {
+        "id": "79081a43.376504",
+        "type": "function",
+        "z": "b89b8cb9.5e3b5",
+        "name": "data_packets",
+        "func": "var input = msg.payload;\nvar data = {};\n\nvar ts_last = flow.get(\"TSlast\");\nvar ts_now = input[1] * 1000;\nvar rate = 0;\n\nflow.set(\"TSlast\", ts_now);\nif(ts_last == undefined) {\n    msg.payload = 0;\n    return msg;\n}\n\ndata.ts_range = (ts_now - ts_last);\ndata.ts = ts_now;\ndata.packets = [];\n\nfor(var i=2; i < input.length; i++) {\n    data.packets.push(input[i]);\n}\n\nmsg.payload = data;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 670,
+        "y": 160,
+        "wires": [
+            [
+                "a0e78917.8b1f08"
+            ]
+        ]
+    },
+    {
+        "id": "ae1c6d42.a195e",
+        "type": "debug",
+        "z": "b89b8cb9.5e3b5",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1140,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "5883baee.874414",
+        "type": "function",
+        "z": "b89b8cb9.5e3b5",
+        "name": "plot_values",
+        "func": "var input = msg.payload;\n\nvar msgs = [];\n\n\n\nvar min = Math.min(...input.packets);\nvar max = Math.max(...input.packets);\n\nmsgs.push({topic:\"min\",\n    payload: min, \n    timestamp: input.ts\n});\n\nmsgs.push({topic:\"max\",\n    payload: max, \n    timestamp: input.ts\n});\n\n// var step = input.ts_range / input.packets.length;\n// for(var i=0; i < input.packets.length; i++) {\n//     msgs.push({topic: \"a\", \n//         payload: input.packets[i], \n//         timestamp: input.ts + i*step\n//     });\n// }\n\n// msg.payload = msgs;\n// return msg;\n\nreturn [msgs];",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1050,
+        "y": 480,
+        "wires": [
+            [
+                "7a2a45b0.c9a71c"
+            ]
+        ]
+    },
+    {
+        "id": "a0e78917.8b1f08",
+        "type": "delay",
+        "z": "b89b8cb9.5e3b5",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 810,
+        "y": 260,
+        "wires": [
+            [
+                "5883baee.874414"
+            ]
+        ]
+    },
+    {
+        "id": "7a2a45b0.c9a71c",
+        "type": "ui_chart",
+        "z": "b89b8cb9.5e3b5",
+        "name": "",
+        "group": "8584d008.d0052",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "label": "chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "x": 1200,
+        "y": 560,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "8584d008.d0052",
+        "type": "ui_group",
+        "z": "",
+        "name": "test1",
+        "tab": "87d97be9.9ebb58",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "87d97be9.9ebb58",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Home",
+        "icon": "dashboard"
+    }
+]
