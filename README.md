@@ -1,14 +1,14 @@
-Examples node-RED "Flows" that can be used for your Raspberry Shake
+Examples Node-RED "Flows" that can be used for your Raspberry Shake
 
 Visit https://nodered.org/
 
 
-# How to interface with the Raspberry Shake via node-RED's udp input
+# How to interface with the Raspberry Shake via Node-RED's udp input
 
 See: https://manual.raspberryshake.org/udp.html
 
 
-# How to install node-RED on your computer (or another Raspberry Pi)
+# How to install Node-RED on your computer (or another Raspberry Pi)
 
 Example: Ubuntu 18.04
 
@@ -18,19 +18,21 @@ Example: Ubuntu 18.04
 
 For installation on other systems: https://nodered.org/#get-started
 
-WARNING: We do not recommend installaing node-RED on your Raspberry Shake. It will consume a lot of CPU causing the processor to heat up a lot!
+<aside class="notice">
+WARNING: We do not recommend installaing Node-RED on your Raspberry Shake. It will consume a lot of CPU causing the processor to heat up a lot!
+</aside>
 
 
-# How to open node-red in your browser and start playing around
+# How to open Node-RED in your browser and start playing around
 
 	$ node-red
 
 Then navigate to: localhost:1880
 
 
-# How to upload an example flow to your instance of node-RED
+# How to upload an example flow to your instance of Node-RED
 
-1. Open node-RED in your browser
+1. Open Node-RED in your browser
 2. Click to hamburger menu on the right hand side
 3. Import
 4. Clipboard
