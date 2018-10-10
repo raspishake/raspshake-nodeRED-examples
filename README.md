@@ -1,6 +1,6 @@
 Examples node-RED "Flows" that can be used for your Raspberry Shake
 
-Visit nodered.org
+Visit https://nodered.org/
 
 
 # node-RED installation on Ubuntu
