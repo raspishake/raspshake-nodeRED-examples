@@ -7,6 +7,30 @@ Visit https://nodered.org/
 
 See: https://manual.raspberryshake.org/udp.html
 
+Example code for translating UDP output into an array:
+
+```javascript
+// this function gets UDP data
+// and converts it to array
+
+var input = msg.payload;
+input = input.replace(new RegExp("'", 'g'), "\"")
+  .replace(new RegExp("{", 'g'), "[")
+  .replace(new RegExp("}", 'g'), "]");
+
+var data = JSON.parse(input)
+
+var value = 0;
+for(var i=2; i < data.length; i++) {
+    if(data[i] < 0)
+        value += data[i];
+}
+
+value = Math.abs(value);
+
+msg.payload = value;
+return msg;
+```
 
 # How to install Node-RED on your computer (or another Raspberry Pi)
 
