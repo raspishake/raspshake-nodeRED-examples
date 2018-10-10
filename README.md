@@ -3,7 +3,7 @@ Examples Node-RED "Flows" that can be used for your Raspberry Shake
 Visit https://nodered.org/
 
 
-# How to interface with the Raspberry Shake via Node-RED's udp input
+# How to interface with the Raspberry Shake via Node-RED's UDP input
 
 See: https://manual.raspberryshake.org/udp.html
 
@@ -18,9 +18,7 @@ Example: Ubuntu 18.04
 
 For installation on other systems: https://nodered.org/#get-started
 
-<aside class="notice">
-WARNING: We do not recommend installaing Node-RED on your Raspberry Shake. It will consume a lot of CPU causing the processor to heat up a lot!
-</aside>
+<span style="color:blue">WARNING: We do not recommend installaing Node-RED on your Raspberry Shake. It will consume a lot of CPU causing the processor to heat up a lot!</span>
 
 
 # How to open Node-RED in your browser and start playing around
@@ -30,7 +28,7 @@ WARNING: We do not recommend installaing Node-RED on your Raspberry Shake. It wi
 Then navigate to: localhost:1880
 
 
-# How to upload an example flow to your instance of Node-RED
+# How to upload an example Flow to your instance of Node-RED
 
 1. Open Node-RED in your browser
 2. Click to hamburger menu on the right hand side
