@@ -8,7 +8,7 @@ Visit https://nodered.org/
 See: https://manual.raspberryshake.org/udp.html
 
 
-# how to install node-RED on your computer (or another Raspberry Pi)
+# How to install node-RED on your computer (or another Raspberry Pi)
 
 Example: Ubuntu 18.04
 
