@@ -4,16 +4,16 @@ Only one channel supported.
 Paste code below into node-red import:
 [
     {
-        "id": "b89b8cb9.5e3b5",
+        "id": "94c67c2b.5113a",
         "type": "tab",
-        "label": "Flow 1",
+        "label": "Flow 5",
         "disabled": false,
         "info": ""
     },
     {
-        "id": "a18f3e19.4927",
+        "id": "c12c2dfb.950a5",
         "type": "udp in",
-        "z": "b89b8cb9.5e3b5",
+        "z": "94c67c2b.5113a",
         "name": "",
         "iface": "",
         "port": "20001",
@@ -21,53 +21,53 @@ Paste code below into node-red import:
         "multicast": "false",
         "group": "",
         "datatype": "utf8",
-        "x": 160,
-        "y": 40,
+        "x": 120,
+        "y": 60,
         "wires": [
             [
-                "2beea3a5.b5146c"
+                "af514cea.ecd3c"
             ]
         ]
     },
     {
-        "id": "2beea3a5.b5146c",
+        "id": "af514cea.ecd3c",
         "type": "function",
-        "z": "b89b8cb9.5e3b5",
+        "z": "94c67c2b.5113a",
         "name": "udp2array",
         "func": "var input = msg.payload;\ninput = input.replace(new RegExp(\"'\", 'g'), \"\\\"\")\n  .replace(new RegExp(\"{\", 'g'), \"[\")\n  .replace(new RegExp(\"}\", 'g'), \"]\");\n\nvar data = JSON.parse(input);\n\nmsg.payload = data;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 330,
-        "y": 40,
+        "x": 290,
+        "y": 60,
         "wires": [
             [
-                "79081a43.376504"
+                "d7ffda25.df20b8"
             ]
         ]
     },
     {
-        "id": "79081a43.376504",
+        "id": "d7ffda25.df20b8",
         "type": "function",
-        "z": "b89b8cb9.5e3b5",
+        "z": "94c67c2b.5113a",
         "name": "format data packets",
         "func": "var input = msg.payload;\nvar data = {};\n\nvar ts_last = flow.get(\"TSlast\");\nvar ts_now = input[1] * 1000;\nvar rate = 0;\n\nflow.set(\"TSlast\", ts_now);\nif(ts_last == undefined) {\n    msg.payload = 0;\n    return msg;\n}\n\ndata.ts_range = (ts_now - ts_last);\ndata.ts = ts_now;\ndata.packets = [];\n\nfor(var i=2; i < input.length; i++) {\n    data.packets.push(input[i]);\n}\n\nmsg.payload = data;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 540,
-        "y": 40,
+        "x": 500,
+        "y": 60,
         "wires": [
             [
-                "5ce65152.58f35"
+                "60917f30.b0a45"
             ]
         ]
     },
     {
-        "id": "7a2a45b0.c9a71c",
+        "id": "920732c7.24398",
         "type": "ui_chart",
-        "z": "b89b8cb9.5e3b5",
+        "z": "94c67c2b.5113a",
         "name": "",
         "group": "8584d008.d0052",
-        "order": 0,
+        "order": 1,
         "width": "0",
         "height": "0",
         "label": "chart",
@@ -96,26 +96,26 @@ Paste code below into node-red import:
             "#c5b0d5"
         ],
         "useOldStyle": false,
-        "x": 950,
-        "y": 40,
+        "x": 910,
+        "y": 60,
         "wires": [
             [],
             []
         ]
     },
     {
-        "id": "5ce65152.58f35",
+        "id": "60917f30.b0a45",
         "type": "function",
-        "z": "b89b8cb9.5e3b5",
+        "z": "94c67c2b.5113a",
         "name": "format plot values",
-        "func": "var EVERY_N_PACKET = 1;\nvar POINTS_PER_SECOND = 100 / EVERY_N_PACKET;\nvar KEEP_SECONDS = 60;\n\nvar MAX_POINTS = POINTS_PER_SECOND * KEEP_SECONDS;\n\nvar input = msg.payload;\n\nvar data = [{series:[\"P\"],\n    data:[],\n    labels:[\"Points\"]\n}];\n\nvar allPoints = flow.get(\"all_points\");\nif(allPoints == undefined)\n    allPoints = [];\n\n\nfor(var i=0, step=EVERY_N_PACKET; i + step < input.packets.length; i += step) {\n    var o = {x: input.ts + i*10,\n             y: input.packets[i]};\n    allPoints.push(o);\n}\n\nif(allPoints.length > MAX_POINTS)\n    allPoints = allPoints.slice(\n        allPoints.length - MAX_POINTS, \n        allPoints.length\n    );\n\nflow.set(\"all_points\", allPoints);\n\ndata[0].data.push(allPoints);\n\n\nmsg.payload = data;\n\nreturn msg;",
+        "func": "var EVERY_N_PACKET = 20; // max = 24\nvar POINTS_PER_SECOND = 100 / EVERY_N_PACKET;\nvar KEEP_SECONDS = 60;\nvar KEY=\"f1_all_points\";\n\nvar MAX_POINTS = POINTS_PER_SECOND * KEEP_SECONDS;\n\nvar input = msg.payload;\n\nvar data = [{series:[\"P\"],\n    data:[],\n    labels:[\"Points\"]\n}];\n\nvar allPoints = flow.get(KEY);\nif(allPoints == undefined)\n    allPoints = [];\n\n\nfor(var i=0, step=EVERY_N_PACKET; i + step < input.packets.length; i += step) {\n    var o = {x: input.ts + i*10,\n             y: input.packets[i]};\n    allPoints.push(o);\n}\n\nif(allPoints.length > MAX_POINTS)\n    allPoints = allPoints.slice(\n        allPoints.length - MAX_POINTS, \n        allPoints.length\n    );\n\nflow.set(KEY, allPoints);\n\ndata[0].data.push(allPoints);\n\n\nmsg.payload = data;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 770,
-        "y": 40,
+        "x": 730,
+        "y": 60,
         "wires": [
             [
-                "7a2a45b0.c9a71c"
+                "920732c7.24398"
             ]
         ]
     },
