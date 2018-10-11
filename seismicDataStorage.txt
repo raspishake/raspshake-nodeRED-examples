@@ -1,1 +1,43 @@
-[{"id":"81fe995.f7fab68","type":"tab","label":"Seismic Data Storage","disabled":false,"info":""},{"id":"c5860651.221598","type":"udp in","z":"81fe995.f7fab68","name":"","iface":"","port":"54321","ipv":"udp4","multicast":"false","group":"","datatype":"utf8","x":80,"y":280,"wires":[["480c6a9f.a74d34"]]},{"id":"480c6a9f.a74d34","type":"file","z":"81fe995.f7fab68","name":"","filename":"/home/branden/Desktop/waveforms.txt","appendNewline":true,"createDir":true,"overwriteFile":"false","x":430,"y":280,"wires":[[]]}]
+[
+    {
+        "id": "334aa539.fc636a",
+        "type": "tab",
+        "label": "Seismic Data Storage",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "d2d93c40.78112",
+        "type": "udp in",
+        "z": "334aa539.fc636a",
+        "name": "",
+        "iface": "",
+        "port": "20001",
+        "ipv": "udp4",
+        "multicast": "false",
+        "group": "",
+        "datatype": "utf8",
+        "x": 80,
+        "y": 280,
+        "wires": [
+            [
+                "8d16c0c2.9df3"
+            ]
+        ]
+    },
+    {
+        "id": "8d16c0c2.9df3",
+        "type": "file",
+        "z": "334aa539.fc636a",
+        "name": "",
+        "filename": "/tmp/waveforms.txt",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "x": 360,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    }
+]
