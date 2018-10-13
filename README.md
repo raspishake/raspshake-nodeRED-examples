@@ -37,6 +37,13 @@ value = Math.abs(value);
 msg.payload = value;
 ```
 
+# How to get access to GPIO
+For example to blink with green and red leds you need to fix permissions.
+SSH to your device and execute:
+```
+sudo chmod 666 /sys/class/leds/led*/brightness
+```
+
 # How to install Node-RED on your computer (or another Raspberry Pi)
 
 Example: Ubuntu 18.04
