@@ -1,4 +1,4 @@
-Examples Node-RED "Flows" that can be used for your Raspberry Shake
+Examples Node-RED "Flows" that can be used for your Raspberry Shake: https://raspberryshake.org/
 
 Visit https://nodered.org/
 
