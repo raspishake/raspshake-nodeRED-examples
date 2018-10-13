@@ -81,6 +81,8 @@ SSH to your device and execute:
 sudo chmod 666 /sys/class/leds/led*/brightness
 ```
 
+# HAVE FUN!!!!!
+
 
 
 
