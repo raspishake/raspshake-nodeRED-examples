@@ -20,6 +20,13 @@ input = input.replace(new RegExp("'", 'g'), "\"")
 
 var data = JSON.parse(input)
 
+msg.payload = data;
+return msg;
+```
+
+Example code for measure shaking level:
+```javascript
+var data = msg.payload;   // get this from previous function
 var value = 0;
 for(var i=2; i < data.length; i++) {
     if(data[i] < 0)
@@ -27,9 +34,7 @@ for(var i=2; i < data.length; i++) {
 }
 
 value = Math.abs(value);
-
 msg.payload = value;
-return msg;
 ```
 
 # How to install Node-RED on your computer (or another Raspberry Pi)
