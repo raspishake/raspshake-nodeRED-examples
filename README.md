@@ -1,4 +1,4 @@
-Examples Node-RED "Flows" that can be used for your Raspberry Shake Personal Earth Monitor: https://raspberryshake.org/
+Example Node-RED "Flows" that can be used for your Raspberry Shake Personal Earth Monitor: https://raspberryshake.org/
 
 Visit https://nodered.org/ for more information on Node-RED
 
