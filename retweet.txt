@@ -1,0 +1,100 @@
+Before you can retweet you have to login to your twitter and create an application at: https://developer.twitter.com/en/apps
+
+After that you should open "Keys and tokens" tab. You will need Consumer API keys and you have to create "Access token & access token secret"
+
+
+When you have both keys you can setup authentication in node-read twitter nodes.
+
+
+Retweeting node-red flow:
+
+[
+    {
+        "id": "64d44404.e62ddc",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "aede1a83.5a6c48",
+        "type": "twitter in",
+        "z": "64d44404.e62ddc",
+        "twitter": "",
+        "tags": "@raspishake,#raspberryshake",
+        "user": "false",
+        "name": "twitter in",
+        "inputs": 0,
+        "x": 100,
+        "y": 60,
+        "wires": [
+            [
+                "5847173d.2099e8"
+            ]
+        ]
+    },
+    {
+        "id": "29cf3ff6.17ae1",
+        "type": "twitter out",
+        "z": "64d44404.e62ddc",
+        "twitter": "",
+        "name": "Tweet",
+        "x": 430,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "5847173d.2099e8",
+        "type": "delay",
+        "z": "64d44404.e62ddc",
+        "name": "",
+        "pauseType": "queue",
+        "timeout": "5",
+        "timeoutUnits": "hours",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "minute",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "hours",
+        "drop": true,
+        "x": 370,
+        "y": 60,
+        "wires": [
+            [
+                "30aca34c.7439bc"
+            ]
+        ]
+    },
+    {
+        "id": "5bf03a94.953a94",
+        "type": "debug",
+        "z": "64d44404.e62ddc",
+        "name": "debug output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 460,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "30aca34c.7439bc",
+        "type": "function",
+        "z": "64d44404.e62ddc",
+        "name": "change tweet",
+        "func": "var topic = msg.topic.replace(\"tweets/\", \"@\");\nmsg.payload = \"RT: \" + topic + \"-\" + msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 160,
+        "y": 160,
+        "wires": [
+            [
+                "5bf03a94.953a94",
+                "29cf3ff6.17ae1"
+            ]
+        ]
+    }
+]
