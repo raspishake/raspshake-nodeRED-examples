@@ -29,6 +29,8 @@ Then navigate to: localhost:1880
 - realtime-plot.txt - display real-time data from your Raspberry Shake
 - seismicDataStorage.txt - store data from your Raspberry Shake on disk
 
+## Examples that do not require streaming
+- retweet.txt - retweets posts containing @raspishake and/ or #raspberryshake on your Twitter feed
 
 # How to upload an example Flow to your instance of Node-RED
 
