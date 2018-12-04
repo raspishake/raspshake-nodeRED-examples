@@ -44,37 +44,21 @@ Then navigate to: localhost:1880
 
 # How to interface with the Raspberry Shake via Node-RED's UDP input
 
-See: https://manual.raspberryshake.org/udp.html
+See here for description of UDP output: https://manual.raspberryshake.org/udp.html
 
-Example code for translating UDP output into an array:
+We have developed and submitted a function to Node-RED's NPM that translates the UDP output into an array. This is available at: https://www.npmjs.com/~raspishake (see: node-red-rshake-udp-parser). To add this node to your local instance of Node-RED:
 
-```javascript
-// this function gets UDP data
-// and converts it to array
-
-var input = msg.payload;
-input = input.replace(new RegExp("'", 'g'), "\"")
-  .replace(new RegExp("{", 'g'), "[")
-  .replace(new RegExp("}", 'g'), "]");
-
-var data = JSON.parse(input)
-
-msg.payload = data;
-return msg;
+```
+$ cd $HOME/.node-red
+$ npm install node-red-rshake-udp-parser
 ```
 
-Example code for measure shaking level:
-```javascript
-var data = msg.payload;   // get this from previous function
-var value = 0;
-for(var i=2; i < data.length; i++) {
-    if(data[i] < 0)
-        value += data[i];
-}
+Then, 
 
-value = Math.abs(value);
-msg.payload = value;
-```
+1. enable UDP data streaming on your Raspberry Shake. This is explained here: https://manual.raspberryshake.org/udp.html
+2. use UDP input in Node-RED and connect it with 'rshake udp parser'
+3. make sure you changed 'output' to 'a string' at UDP input configuration
+
 
 # How to get access to GPIO for blinking LEDs
 For example to blink with green and red LEDs you need to fix permissions.
