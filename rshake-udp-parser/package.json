@@ -1,0 +1,12 @@
+{
+    "name" : "node-red-rshake-udp-parser",
+    "version": "0.0.2",
+    "description": "raspberry shake node",
+    "keywords": [ "node-red", "raspberryshake", "rshake-udp-parser" ],
+
+    "node-red": {
+	"nodes": {
+	    "rshake-udp-parser": "rshake-udp-parser.js"
+	}
+    }
+}
