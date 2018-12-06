@@ -1,0 +1,373 @@
+So now it uses node-red-rshake-udp-parser node and 'switch' node to select channel.
+Please refer to https://manual.raspberryshake.org/stationNamingConvention.html for channel naming
+
+The code is below:
+
+[
+    {
+        "id": "bf4ade3.34ba72",
+        "type": "tab",
+        "label": "Blinking LEDs",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "f9a60e53.7fa68",
+        "type": "udp in",
+        "z": "bf4ade3.34ba72",
+        "name": "",
+        "iface": "",
+        "port": "20001",
+        "ipv": "udp4",
+        "multicast": "false",
+        "group": "",
+        "datatype": "utf8",
+        "x": 80,
+        "y": 40,
+        "wires": [
+            [
+                "6216a4d3.51e4ac"
+            ]
+        ]
+    },
+    {
+        "id": "4f05fe96.43299",
+        "type": "switch",
+        "z": "bf4ade3.34ba72",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "btwn",
+                "v": "10000000",
+                "vt": "num",
+                "v2": "80000000",
+                "v2t": "num"
+            },
+            {
+                "t": "gt",
+                "v": "80000000",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 410,
+        "y": 440,
+        "wires": [
+            [
+                "5af43153.8db8a"
+            ],
+            [
+                "e278f092.c216c"
+            ]
+        ]
+    },
+    {
+        "id": "5af43153.8db8a",
+        "type": "trigger",
+        "z": "bf4ade3.34ba72",
+        "op1": "1",
+        "op2": "STOP",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "3",
+        "extend": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "name": "cycle_start_stop",
+        "x": 660,
+        "y": 360,
+        "wires": [
+            [
+                "a548b66c.c77c48",
+                "8c2c885b.46afa8"
+            ]
+        ]
+    },
+    {
+        "id": "a548b66c.c77c48",
+        "type": "trigger",
+        "z": "bf4ade3.34ba72",
+        "op1": "1",
+        "op2": "0",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "-500",
+        "extend": false,
+        "units": "ms",
+        "reset": "STOP",
+        "bytopic": "all",
+        "name": "send 1",
+        "x": 810,
+        "y": 380,
+        "wires": [
+            [
+                "30a15836.25bdf8"
+            ]
+        ]
+    },
+    {
+        "id": "30a15836.25bdf8",
+        "type": "file",
+        "z": "bf4ade3.34ba72",
+        "name": "",
+        "filename": "/sys/class/leds/led0/brightness",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "x": 1170,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9424112.244d2f",
+        "type": "trigger",
+        "z": "bf4ade3.34ba72",
+        "op1": "0",
+        "op2": "0",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "-500",
+        "extend": false,
+        "units": "ms",
+        "reset": "STOP",
+        "bytopic": "all",
+        "name": "send 0",
+        "x": 970,
+        "y": 340,
+        "wires": [
+            [
+                "30a15836.25bdf8"
+            ]
+        ]
+    },
+    {
+        "id": "8c2c885b.46afa8",
+        "type": "delay",
+        "z": "bf4ade3.34ba72",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "250",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 830,
+        "y": 340,
+        "wires": [
+            [
+                "9424112.244d2f"
+            ]
+        ]
+    },
+    {
+        "id": "38229866.f3d688",
+        "type": "comment",
+        "z": "bf4ade3.34ba72",
+        "name": "This is SLOW blinking loop",
+        "info": "",
+        "x": 730,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "e278f092.c216c",
+        "type": "trigger",
+        "z": "bf4ade3.34ba72",
+        "op1": "1",
+        "op2": "STOP",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "3",
+        "extend": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "name": "cycle_start_stop",
+        "x": 620,
+        "y": 620,
+        "wires": [
+            [
+                "4ea57d42.1ceed4",
+                "7b1bdd5e.f28c94"
+            ]
+        ]
+    },
+    {
+        "id": "4ea57d42.1ceed4",
+        "type": "trigger",
+        "z": "bf4ade3.34ba72",
+        "op1": "1",
+        "op2": "0",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "-250",
+        "extend": false,
+        "units": "ms",
+        "reset": "STOP",
+        "bytopic": "all",
+        "name": "send 1",
+        "x": 770,
+        "y": 640,
+        "wires": [
+            [
+                "b6b31058.bac16"
+            ]
+        ]
+    },
+    {
+        "id": "b6b31058.bac16",
+        "type": "file",
+        "z": "bf4ade3.34ba72",
+        "name": "",
+        "filename": "/sys/class/leds/led1/brightness",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "x": 1150,
+        "y": 640,
+        "wires": [
+            [
+                "a2750e50.326d6"
+            ]
+        ]
+    },
+    {
+        "id": "5c1e55dc.00563c",
+        "type": "trigger",
+        "z": "bf4ade3.34ba72",
+        "op1": "0",
+        "op2": "0",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "-250",
+        "extend": false,
+        "units": "ms",
+        "reset": "STOP",
+        "bytopic": "all",
+        "name": "send 0",
+        "x": 930,
+        "y": 600,
+        "wires": [
+            [
+                "b6b31058.bac16"
+            ]
+        ]
+    },
+    {
+        "id": "7b1bdd5e.f28c94",
+        "type": "delay",
+        "z": "bf4ade3.34ba72",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "125",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 790,
+        "y": 600,
+        "wires": [
+            [
+                "5c1e55dc.00563c"
+            ]
+        ]
+    },
+    {
+        "id": "c1b194bd.817448",
+        "type": "comment",
+        "z": "bf4ade3.34ba72",
+        "name": "This is FAST blinking loop",
+        "info": "",
+        "x": 730,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "a2750e50.326d6",
+        "type": "file",
+        "z": "bf4ade3.34ba72",
+        "name": "",
+        "filename": "/sys/class/leds/led0/brightness",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "x": 1250,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6216a4d3.51e4ac",
+        "type": "rshake-udp-parser",
+        "z": "bf4ade3.34ba72",
+        "name": "",
+        "x": 140,
+        "y": 180,
+        "wires": [
+            [
+                "ee8ee876.c54b28"
+            ]
+        ]
+    },
+    {
+        "id": "ee8ee876.c54b28",
+        "type": "switch",
+        "z": "bf4ade3.34ba72",
+        "name": "",
+        "property": "payload.channel",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "ENN",
+                "vt": "str"
+            },
+            {
+                "t": "nnull"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 90,
+        "y": 300,
+        "wires": [
+            [
+                "f5ba6799.478b48"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "f5ba6799.478b48",
+        "type": "function",
+        "z": "bf4ade3.34ba72",
+        "name": "calc value",
+        "func": "var packets = msg.payload.packets;\n\nfor(var i=0, v=0; i < packets.length; i++) {\n    v += Math.abs(packets[i]);\n}\n\nmsg.payload = v;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 230,
+        "y": 440,
+        "wires": [
+            [
+                "4f05fe96.43299"
+            ]
+        ]
+    }
+]
