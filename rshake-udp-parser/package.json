@@ -1,8 +1,8 @@
 {
     "name" : "node-red-rshake-udp-parser",
-    "version": "0.0.7",
+    "version": "0.0.10",
     "description": "raspberry shake node",
-    "keywords": [ "node-red", "raspberryshake", "node-red-rshake-udp-parser" ],
+    "keywords": [ "node-red", "nodered", "seismology", "seismograph", "seismometer", "earthquakes", "raspberry shake", "raspberryshake", "raspishake", "node-red-rshake-udp-parser" ],
 
     "node-red": {
 	"nodes": {
