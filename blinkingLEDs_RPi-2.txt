@@ -1,8 +1,7 @@
-So, blinking uses node-red-rshake-udp-parser node now. And 'switch' node to select channel.
-Please refer to the https://manual.raspberryshake.org/stationNamingConvention.html to know the channel names
+So now it uses node-red-rshake-udp-parser node and 'switch' node to select channel.
+Please refer to https://manual.raspberryshake.org/stationNamingConvention.html for channel naming
 
-Paste code below:
-
+The code is below:
 [
     {
         "id": "bf4ade3.34ba72",
@@ -371,4 +370,7 @@ Paste code below:
         ]
     }
 ]
+<<<<<<< HEAD
 
+=======
+>>>>>>> d87430f17a40185ee4c5399c0626c9a4bbd7110d

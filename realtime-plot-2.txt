@@ -1,0 +1,260 @@
+It uses new 'node-red-rshake-udp-parser' node and supports multi-channel now.
+
+Please refer to https://manual.raspberryshake.org/stationNamingConvention.html for channel naming.
+
+The code is below:
+
+[
+    {
+        "id": "ecfd0b8b.cad888",
+        "type": "tab",
+        "label": "Flow 5",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "30172d56.354a22",
+        "type": "udp in",
+        "z": "ecfd0b8b.cad888",
+        "name": "",
+        "iface": "",
+        "port": "20001",
+        "ipv": "udp4",
+        "multicast": "false",
+        "group": "",
+        "datatype": "utf8",
+        "x": 120,
+        "y": 60,
+        "wires": [
+            [
+                "df3e815c.4784e"
+            ]
+        ]
+    },
+    {
+        "id": "cc6ed775.28f1d8",
+        "type": "ui_chart",
+        "z": "ecfd0b8b.cad888",
+        "name": "",
+        "group": "9e6ee37d.13a53",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "label": "chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "120",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "1",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "x": 1150,
+        "y": 140,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "d668d076.e9b6e",
+        "type": "function",
+        "z": "ecfd0b8b.cad888",
+        "name": "format plot values",
+        "func": "var EVERY_N_PACKET = 20; // max = 24\nvar POINTS_PER_SECOND = 100 / EVERY_N_PACKET;\nvar KEEP_SECONDS = 60;\nvar KEY=\"f1_all_points\";\n\nvar MAX_POINTS = POINTS_PER_SECOND * KEEP_SECONDS;\n\nvar input = msg.payload;\n\nvar data = [{series:[\"P\"],\n    data:[],\n    labels:[\"Points\"]\n}];\n\nvar allPoints = flow.get(KEY);\nif(allPoints == undefined)\n    allPoints = [];\n\n\nfor(var i=0, step=EVERY_N_PACKET; i + step < input.packets.length; i += step) {\n    var o = {x: input.ts + i*10,\n             y: input.packets[i]};\n    allPoints.push(o);\n}\n\nif(allPoints.length > MAX_POINTS)\n    allPoints = allPoints.slice(\n        allPoints.length - MAX_POINTS, \n        allPoints.length\n    );\n\nflow.set(KEY, allPoints);\n\ndata[0].data.push(allPoints);\n\n\nmsg.payload = data;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 870,
+        "y": 140,
+        "wires": [
+            [
+                "cc6ed775.28f1d8"
+            ]
+        ]
+    },
+    {
+        "id": "df3e815c.4784e",
+        "type": "rshake-udp-parser",
+        "z": "ecfd0b8b.cad888",
+        "name": "",
+        "x": 360,
+        "y": 80,
+        "wires": [
+            [
+                "ac2f56da.6b71c8"
+            ]
+        ]
+    },
+    {
+        "id": "ac2f56da.6b71c8",
+        "type": "switch",
+        "z": "ecfd0b8b.cad888",
+        "name": "",
+        "property": "payload.channel",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "EHE",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "ENZ",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "EHZ",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "ENE",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "ENN",
+                "vt": "str"
+            },
+            {
+                "t": "nnull"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 6,
+        "x": 530,
+        "y": 80,
+        "wires": [
+            [],
+            [],
+            [],
+            [
+                "a9cd1c14.31c9c"
+            ],
+            [
+                "d668d076.e9b6e",
+                "77e7a3a0.65b34c"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "77e7a3a0.65b34c",
+        "type": "debug",
+        "z": "ecfd0b8b.cad888",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1070,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "a9cd1c14.31c9c",
+        "type": "function",
+        "z": "ecfd0b8b.cad888",
+        "name": "format plot values",
+        "func": "\nvar EVERY_N_PACKET = 20; // max = 24\nvar POINTS_PER_SECOND = 100 / EVERY_N_PACKET;\nvar KEEP_SECONDS = 60;\nvar KEY=\"f2_all_points\";\n\nvar MAX_POINTS = POINTS_PER_SECOND * KEEP_SECONDS;\n\nvar input = msg.payload;\n\nvar data = [{series:[\"P\"],\n    data:[],\n    labels:[\"Points\"]\n}];\n\nvar allPoints = flow.get(KEY);\nif(allPoints == undefined)\n    allPoints = [];\n\n\nfor(var i=0, step=EVERY_N_PACKET; i + step < input.packets.length; i += step) {\n    var o = {x: input.ts + i*10,\n             y: input.packets[i]};\n    allPoints.push(o);\n}\n\nif(allPoints.length > MAX_POINTS)\n    allPoints = allPoints.slice(\n        allPoints.length - MAX_POINTS, \n        allPoints.length\n    );\n\nflow.set(KEY, allPoints);\n\ndata[0].data.push(allPoints);\n\n\nmsg.payload = data;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 870,
+        "y": 80,
+        "wires": [
+            [
+                "1277b87f.1e4108"
+            ]
+        ]
+    },
+    {
+        "id": "1277b87f.1e4108",
+        "type": "ui_chart",
+        "z": "ecfd0b8b.cad888",
+        "name": "",
+        "group": "380a3fb0.89c32",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "label": "chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "x": 1150,
+        "y": 80,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "9e6ee37d.13a53",
+        "type": "ui_group",
+        "z": "",
+        "name": "test1",
+        "tab": "3025e763.8fe908",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "380a3fb0.89c32",
+        "type": "ui_group",
+        "z": "",
+        "name": "test2",
+        "tab": "3025e763.8fe908",
+        "disp": true,
+        "width": "11",
+        "collapse": true
+    },
+    {
+        "id": "3025e763.8fe908",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Home",
+        "icon": "dashboard"
+    }
+]
