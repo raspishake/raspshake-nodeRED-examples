@@ -1,6 +1,8 @@
 It uses new 'node-red-rshake-udp-parser' node and supports multi-channel now.
 
-Copy lines below:
+Please refer to https://manual.raspberryshake.org/stationNamingConvention.html for channel naming.
+
+The code is below:
 
 [
     {
